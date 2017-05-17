@@ -1,0 +1,36 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1504
+{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
+{\colortbl;\red255\green255\blue255;\red27\green31\blue34;\red255\green255\blue255;\red255\green255\blue255;
+}
+{\*\expandedcolortbl;\csgray\c100000;\cssrgb\c14118\c16078\c18039;\cssrgb\c100000\c100000\c100000;\csgray\c100000;
+}
+\margl1440\margr1440\vieww16600\viewh11420\viewkind0
+\deftab720
+\pard\pardeftab720\partightenfactor0
+
+\f0\fs32 \cf2 \cb3 \expnd0\expndtw0\kerning0
+Q1: What is the difference between EBS and S3?\
+\
+S3 is a storage repository that provides object storage as well as providing redundancy in case of failure or accidental deletion. It provides flexibility in the size of data the user needs to store and prevents a company from over-or-underestimating their data storage needs.\
+\
+EBS, on the other hand, is a virtual hard drive that can connect to various EC2 instances. It allows you to connect to your data (that may be stored in S3) without having any data stored locally. \
+\cb4 \
+\cb3 Q2: When would you consider a cloud infrastructure for your data science tasks?\
+\
+Cloud infrastructure is ideal for users/companies who don\'92t know how much data they\'92re going to need to store, or if they expect varying needs of storage space over time. Additionally, if they will need varying levels of memory, storage, and networking capacity, cloud computing is a solid choice.\
+\cb4 \
+\cb3 Q3: What is the difference between spot instances and reserved instances?\cb4 \
+\cb3 \
+Spot instances are reduced in price because they use spare EC2 computing capacity. It is best used for noncritical workloads, and only charge the user for capacity used.\
+\
+Reserved instances are also reduced in price, but are meant for workloads that use computing power at a steady rate. On-demand pricing adjusts the computing power based on the needs of the processor\'97 however, since reserved instances have expected CPU requirements with little variability, the price is reduced.\
+\
+\
+Q4: List the names of four software packages installed on the UCB AMI\
+\
+By using \'93sudo yum search \'93find\'94 \'93, I discovered a number of packages, but here are four:\
+\
+perl-File-Find-Rule.noarch\
+NearTree.i686\
+ack.noarch\
+crudminer.noarch}
