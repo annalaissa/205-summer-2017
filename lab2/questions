@@ -1,0 +1,16 @@
+1. List the HDFS contents of /user
+
+/history
+/hive
+/hue
+/jenkins
+/oozie
+/root
+/spark
+/w205
+
+Q1: How many live datanodes are there? 1
+
+Q2: How much non-DFS storage is used? —> 5.10 GB
+
+Q3: How much DFS storage is used? —> 136.87 MB
