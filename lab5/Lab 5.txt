@@ -1,0 +1,166 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1504
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 Menlo-Regular;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red255\green255\blue255;}
+{\*\expandedcolortbl;\csgray\c100000;\csgray\c0;\csgray\c100000;}
+\margl1440\margr1440\vieww51000\viewh25780\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 Question 1: What is the output of \\dt?\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f1\fs22 \cf2 \cb3 \CocoaLigature0               List of relations\
+ Schema |       Name       | Type  |  Owner   \
+--------+------------------+-------+----------\
+ public | actor            | table | postgres\
+ public | address          | table | postgres\
+ public | category         | table | postgres\
+ public | city             | table | postgres\
+ public | country          | table | postgres\
+ public | customer         | table | postgres\
+ public | film             | table | postgres\
+ public | film_actor       | table | postgres\
+ public | film_category    | table | postgres\
+ public | inventory        | table | postgres\
+ public | language         | table | postgres\
+ public | payment          | table | postgres\
+ public | payment_p2007_01 | table | postgres\
+ public | payment_p2007_02 | table | postgres\
+ public | payment_p2007_03 | table | postgres\
+ public | payment_p2007_04 | table | postgres\
+ public | payment_p2007_05 | table | postgres\
+ public | payment_p2007_06 | table | postgres\
+ public | rental           | table | postgres\
+ public | staff            | table | postgres\
+ public | store            | table | postgres\
+(21 rows)\
+\
+\
+Question 2: What is the schema for the customer table?\
+\
+                                          Table "public.customer"\
+   Column    |            Type             |                           Modifiers                  \
+          \
+-------------+-----------------------------+------------------------------------------------------\
+----------\
+ customer_id | integer                     | not null default nextval('customer_customer_id_seq'::\
+regclass)\
+ store_id    | smallint                    | not null\
+ first_name  | character varying(45)       | not null\
+ last_name   | character varying(45)       | not null\
+ email       | character varying(50)       | \
+ address_id  | smallint                    | not null\
+ activebool  | boolean                     | not null default true\
+ create_date | date                        | not null default ('now'::text)::date\
+ last_update | timestamp without time zone | default now()\
+ active      | integer                     | \
+\
+\
+Question 3: What similarities do you see in the explain plans for these 3 queries?\
+\
+###First Query Plan\
+\
+                         QUERY PLAN                         \
+------------------------------------------------------------\
+ Seq Scan on customer  (cost=0.00..14.99 rows=599 width=17)\
+(1 row)\
+\
+\
+###Second Query Plan\
+                                        QUERY PLAN                                        \
+------------------------------------------------------------------------------------------\
+ Result  (cost=0.00..420.63 rows=5178 width=19)\
+   ->  Append  (cost=0.00..420.63 rows=5178 width=19)\
+         ->  Seq Scan on payment  (cost=0.00..29.95 rows=739 width=21)\
+               Filter: ((amount <= 1::numeric) OR (amount >= 8::numeric))\
+         ->  Seq Scan on payment_p2007_01 payment  (cost=0.00..26.36 rows=266 width=18)\
+               Filter: ((amount <= 1::numeric) OR (amount >= 8::numeric))\
+         ->  Seq Scan on payment_p2007_02 payment  (cost=0.00..51.68 rows=531 width=18)\
+               Filter: ((amount <= 1::numeric) OR (amount >= 8::numeric))\
+         ->  Seq Scan on payment_p2007_03 payment  (cost=0.00..126.66 rows=1268 width=18)\
+               Filter: ((amount <= 1::numeric) OR (amount >= 8::numeric))\
+         ->  Seq Scan on payment_p2007_04 payment  (cost=0.00..151.31 rows=1557 width=18)\
+               Filter: ((amount <= 1::numeric) OR (amount >= 8::numeric))\
+         ->  Seq Scan on payment_p2007_05 payment  (cost=0.00..4.73 rows=78 width=17)\
+               Filter: ((amount <= 1::numeric) OR (amount >= 8::numeric))\
+         ->  Seq Scan on payment_p2007_06 payment  (cost=0.00..29.95 rows=739 width=21)\
+               Filter: ((amount <= 1::numeric) OR (amount >= 8::numeric))\
+(16 rows)\
+\
+\
+###Third Query Plan\
+\
+                                        QUERY PLAN                                        \
+------------------------------------------------------------------------------------------\
+ Result  (cost=0.00..420.63 rows=3600 width=14)\
+   ->  Append  (cost=0.00..420.63 rows=3600 width=14)\
+         ->  Seq Scan on payment  (cost=0.00..29.95 rows=7 width=17)\
+               Filter: ((amount >= 5::numeric) AND (amount <= 9::numeric))\
+         ->  Seq Scan on payment_p2007_01 payment  (cost=0.00..26.36 rows=242 width=14)\
+               Filter: ((amount >= 5::numeric) AND (amount <= 9::numeric))\
+         ->  Seq Scan on payment_p2007_02 payment  (cost=0.00..51.68 rows=506 width=14)\
+               Filter: ((amount >= 5::numeric) AND (amount <= 9::numeric))\
+         ->  Seq Scan on payment_p2007_03 payment  (cost=0.00..126.66 rows=1290 width=14)\
+               Filter: ((amount >= 5::numeric) AND (amount <= 9::numeric))\
+         ->  Seq Scan on payment_p2007_04 payment  (cost=0.00..151.31 rows=1535 width=14)\
+               Filter: ((amount >= 5::numeric) AND (amount <= 9::numeric))\
+         ->  Seq Scan on payment_p2007_05 payment  (cost=0.00..4.73 rows=13 width=13)\
+               Filter: ((amount >= 5::numeric) AND (amount <= 9::numeric))\
+         ->  Seq Scan on payment_p2007_06 payment  (cost=0.00..29.95 rows=7 width=17)\
+               Filter: ((amount >= 5::numeric) AND (amount <= 9::numeric))\
+(16 rows)\
+\
+\
+\
+My answer: The first query doesn\'92t have to do any filtering because we are returning all records for the customer, and only selecting the columns we want to see. The second two queries have sub lines for each table that identify the filters required. Additionally, the second two queries accessed payment information that was stored in multiple tables, so we see the result of the iteration through those tables in these explain plans.\
+\
+\
+Question 4: What is the difference between the plans for the Partitioned table and the union query? Why do you think this difference exists?\
+\
+                                            QUERY PLAN                                            \
+--------------------------------------------------------------------------------------------------\
+ HashAggregate  (cost=127.26..129.76 rows=200 width=13)\
+   ->  HashAggregate  (cost=98.31..109.89 rows=1158 width=28)\
+         ->  Append  (cost=0.00..80.94 rows=1158 width=28)\
+               ->  Seq Scan on payment_p2007_01  (cost=0.00..23.46 rows=1157 width=28)\
+                     Filter: (payment_date <= '2007-02-01 00:00:00'::timestamp without time zone)\
+               ->  Seq Scan on payment_p2007_02  (cost=0.00..45.90 rows=1 width=28)\
+                     Filter: (payment_date <= '2007-02-01 00:00:00'::timestamp without time zone)\
+(7 rows)\
+\
+dvdrental=# explain select customer_id, sum(amount) from payment where payment_date <= '2007-02-01 00:00:00'::timestamp without time zone group by customer_id;\
+                                         QUERY PLAN                                         \
+--------------------------------------------------------------------------------------------\
+ HashAggregate  (cost=103.99..106.49 rows=200 width=11)\
+   ->  Append  (cost=0.00..95.99 rows=1601 width=11)\
+         ->  Seq Scan on payment  (cost=0.00..26.62 rows=443 width=13)\
+               Filter: (payment_date <= '2007-02-01 00:00:00'::timestamp without time zone)\
+         ->  Seq Scan on payment_p2007_01 payment  (cost=0.00..23.46 rows=1157 width=10)\
+               Filter: (payment_date <= '2007-02-01 00:00:00'::timestamp without time zone)\
+         ->  Seq Scan on payment_p2007_02 payment  (cost=0.00..45.90 rows=1 width=10)\
+               Filter: (payment_date <= '2007-02-01 00:00:00'::timestamp without time zone)\
+(8 rows)\
+\
+\
+The first query costs much more and returns fewer rows than the second query. It most likely costs more because the effort to cross reference between tables is more than the effort to simply sum results, as seen in the fact that it has two HashAggregate lines (one for each table). The first query returns fewer rows than the second query because it is returning results from only two tables rather than all the tables from payment.\
+\
+Question 5: What join algorithm is used for the inner join?\
+\
+                                        QUERY PLAN                                        \
+------------------------------------------------------------------------------------------\
+ Hash Join  (cost=22.48..606.82 rows=18709 width=65)\
+   Hash Cond: (public.payment.customer_id = customer.customer_id)\
+   ->  Append  (cost=0.00..327.09 rows=18709 width=18)\
+         ->  Seq Scan on payment  (cost=0.00..23.30 rows=1330 width=21)\
+         ->  Seq Scan on payment_p2007_01 payment  (cost=0.00..20.57 rows=1157 width=18)\
+         ->  Seq Scan on payment_p2007_02 payment  (cost=0.00..40.12 rows=2312 width=18)\
+         ->  Seq Scan on payment_p2007_03 payment  (cost=0.00..98.44 rows=5644 width=18)\
+         ->  Seq Scan on payment_p2007_04 payment  (cost=0.00..117.54 rows=6754 width=18)\
+         ->  Seq Scan on payment_p2007_05 payment  (cost=0.00..3.82 rows=182 width=17)\
+         ->  Seq Scan on payment_p2007_06 payment  (cost=0.00..23.30 rows=1330 width=21)\
+   ->  Hash  (cost=14.99..14.99 rows=599 width=49)\
+         ->  Seq Scan on customer  (cost=0.00..14.99 rows=599 width=49)\
+(12 rows)\
+\
+\
+As seen from the explain plan, the system used a hash join algorithm for this inner join.\
+}
